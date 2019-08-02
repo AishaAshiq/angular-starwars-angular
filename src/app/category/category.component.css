@@ -1,0 +1,10 @@
+.example-card {
+    max-width: 400px;
+  }
+
+.marginRange
+{
+  margin-top: 20px;
+  margin-right: 80px;
+  margin-left: 80px;
+}

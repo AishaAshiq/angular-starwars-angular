@@ -1,0 +1,27 @@
+<div fxLayout="row wrap" fxLayoutAlign="center center">
+  <mat-toolbar color="primary" style="display:flex; justify-content:center; align-items:center">
+    <button mat-icon-button type="button" style="size: 60px" routerLink = "/category">
+      <mat-icon>arrow_left</mat-icon>
+    </button>
+    <h1>StarWars</h1>
+  </mat-toolbar>
+  <div style="display:flex; justify-content:center"class="marginRange" fxFlex>
+    <img height="250px" width="500" alt = "Learn HTML5" src="https://lumiere-a.akamaihd.net/v1/images/og-generic_02031d2b.png?region=0%2C0%2C1200%2C1200">
+  </div>
+  <div>
+    <mat-card style="color: gray; display:flex; justify-content:center; align-items:center" fxflex>
+        <h1>{{passedval}}</h1>
+    </mat-card>
+  </div>
+  <div *ngIf = "displaydata != null">
+    <div   *ngFor = "let result of displaydata.results">
+      <mat-card style="border-color: black; display:flex; justify-content:center; align-items:center" fxflex>
+        <mat-card-content style="cursor: pointer; color: black; font-size: 20px" (click) = "navig(result)">
+          <span><div *ngIf = "passedval != 'Films'"> {{result.name}}</div>
+          <div *ngIf = "passedval == 'Films'"> {{result.title}}</div></span>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+  

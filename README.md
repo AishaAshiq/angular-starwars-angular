@@ -1,1 +1,1 @@
-# angular-starwars-angular
+# angular-starwars-workshop

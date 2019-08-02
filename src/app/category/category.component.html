@@ -1,0 +1,17 @@
+<div fxLayout="row wrap" fxLayoutAlign="center">
+  <mat-toolbar color="primary" style="display:flex; justify-content:center; align-items:center">
+    <h1>StarWars</h1>
+  </mat-toolbar>
+  <div style="display:flex; justify-content:center"class="marginRange" fxFlex>
+    <img height="250px" width="500" alt = "Learn HTML5" src="https://lumiere-a.akamaihd.net/v1/images/og-generic_02031d2b.png?region=0%2C0%2C1200%2C1200">
+  </div>
+  <mat-card style="display:flex; justify-content:center; align-items:center; " 
+      *ngFor = "let list of categoryList" fxFlex>
+    <mat-card-content style="cursor: pointer; color: black; font-size: 20px" 
+          routerLink = "/category/{{list}}">
+        {{list}}
+    </mat-card-content>
+  </mat-card>
+</div>
+
+

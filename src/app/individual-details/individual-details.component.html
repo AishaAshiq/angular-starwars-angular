@@ -1,0 +1,375 @@
+<div fxLayout="row wrap" fxLayoutAlign="center center">
+  <mat-toolbar color="primary" style="display:flex; justify-content:center; align-items:center">
+    <button mat-icon-button type="button" style="size: 60px" routerLink = "/category/{{passedval}}">
+      <mat-icon >arrow_left</mat-icon>
+    </button>
+    <h1>StarWars</h1>
+  </mat-toolbar>
+  <div>
+    <mat-card style="color: gray; display:flex; justify-content:center; align-items:center" fxflex>
+        <h1>{{passedval}} <mat-icon>arrow_forward</mat-icon> 
+          <span *ngIf= "passedval != 'Films'">{{displaydata.name}} </span>
+          <span *ngIf= "passedval == 'Films'">{{displaydata.title}} </span>
+        </h1>
+    </mat-card>
+  </div>
+  <div *ngIf = "displaydata != null">
+    <div *ngIf = "passedval == 'Characters'">
+      <mat-card style="justify-content:center; width: 40%" class="marginRange" fxFlex>
+        <img mat-card-image height="400px" src = "https://starwars-visualguide.com/assets/img/categories/character.jpg" alt = "Learn HTML5">
+        <mat-card-content style="color: black; font-size: 20px"  > 
+          <div> 
+            <p><strong>{{displaydata.name}}</strong></p>
+            <p>Height: {{displaydata.height}}</p>
+            <p>Mass: {{displaydata.mass}}</p>
+            <p>Species: {{species}}</p>
+            <p>Hair Color: {{displaydata.hair_color}}</p>
+            <p>Skin Color: {{displaydata.skin_color}}</p>
+            <p>Eye Color: {{displaydata.eye_color}}</p>
+            <p>Birth Year: {{displaydata.birth_year}}</p>
+            <p>Gender: {{displaydata.gender}}</p>
+            <p>Homeworld: {{homeworld}}</p>
+          </div>
+          <br>
+          <br>
+          <div class="jumbotron text-center">
+            <div class="row" style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <tweet></tweet>
+              <pin-it></pin-it>
+              <fb-like></fb-like>
+              <linkedin-share></linkedin-share>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div>
+            <h2>Comments</h2>
+            <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+              <input id="bordr" placeholder="Your name" type="text" formControlName="username"  style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <br>
+              <textarea style="border: 2px solid; padding: 10px; width: 200px" placeholder="Your message" type="text" formControlName="text"></textarea>
+              <br>
+              <br>
+              <button mat-raised-button type="submit" [disabled]="!commentForm.valid">Submit</button>
+            </form>
+            <br>
+            <br>
+            <div *ngIf = "message != null">
+              <div *ngIf = "message.length >= 1">
+                <div *ngFor="let comment of message">
+                  <div *ngIf = "comment.categoryname == displaydata.name" style="display: flex;display:inline;vertical-align:middle;">
+                    <img style="display: flex;display:inline;vertical-align:middle;" class="prefix" height= "30px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEX///8AAACgoKCYmJj39/fY2NjOzs78/Pzl5eXt7e34+Pi1tbWkpKS5ubmnp6fZ2dk+Pj7Hx8fS0tJgYGDf399DQ0Pu7u6RkZFVVVU0NDRkZGR2dnZqamoNDQ1SUlIZGRlycnKCgoIfHx8sLCyJiYlJSUkbGxsmJiavr68SEhJPw9DsAAAEsklEQVR4nO2dh3YiMQxFYxjKQOg9tCGBDfn/H1xYwoEsU1wUScN59wt8Y8aybMl5eQEAAAAAAAAAAAAAAAAAAABPR6MV1TpnalGrIT0Ycqa1atI3N/pJtTaVHhQd0+N8ax7Zzo+R9NBIGK5S7K4kNenhBTPo5/idOdSlhxhEb17gd2Y0lh6mN42lhd+ZnfRIPRlY+p1YD6UH68POXvBEVXq4zkQjJ8HTqio9YkemfxwFjVm0pAftQuzsd+KjRJuc+N3H0ExKs8WJPrwET9FfeuS2TDwFjXmTHrodtnE+jVIEjU6AoDEl2IlH6yDDhfT4i8nLlWyYSQsUUQ8UNKYprVDAIthwJK2QT9gyc0H3YlOU0dugehIdUsIcNOf8bySGe2mNbKYkgmYt7ZHNK42h0Xv8RrHOnFF7MhURCRojbZIFRTC8oHU13ZMZdqRVMjiQGSr9EBu+hxePbKRd0mmSCWrNEmt0hludB4tDOkOlSSJdsDCmJy2TCk1icUFnjhh+gHFD520b5XcIQxl6hIY6VxrCiK80WkR+d2ppfCq9LaVKgI2ZSKtkEHqgfyORVsmgS2Z4lFbJgC5c6FxKT5AZSotkQvUhLqVFMqHKLgbSIpk0aAQVn3kHFSncUHxvQXSQofW09B82FbNF6C6qociC1QbDC5snn0KKFCqWVigi9PKiIi1QSODZvta86Z6wxUZ1pLgyCxDsSg/eDv+KDL1b7v/wvUjUHihuRH7VbfMSdSV6VXpvSiToNYtz6TE70nLtmSnNInPDLWiUJEz8pGf/MU50nuIX0rCdxlfpkfoztomMb+qziVyGRVn/qhQ70VzGu+w7qY9ZuefvStRJPlP0Fst6qWJ8Pq3mcXfX8LXezNrxE+ndaNZPDEv9y4yOoaG7PdDcZzlcfoVWTu6N+VwNlP6A29+33Af/SWh9x5btTt8mp1G5WyV9747uj3i0xcn2z5i39JnGaPczmuwUlWD2Hjp/t+6V2u2vh4ipJeGIUu/U+m5tIbXUHayOnKP++Le/sLFfEgeZ1x0KjsCrWWM7sZjZzEHczSs1WkmXRxWdjR66+Wti1Ck67liIboHitB31A8v0PWgjbs+sjgEE40bTvlavv9pXOoPauHlm2K7ul3P7tnaxmuix+xMtnghdC8dZiyg9a5GoEfEJGvMuYej/gokPApc2O1ZBgdBP2SBjB3PMoGuItabPa5jwG/JmGoSNeA5wnm2EVz75wNg7S9nD5QLfHpyu7cANtneyvF7Uo2DLlSvmJb2/C1cBOFtK8cCKR5CyR80VHsOjoCHPz9S1joQSntfcrM5mfgmW8tNp2LOBYWw5DGX2pFc4jjMoHxZwh6PJW9aQYzHlz+7v4Xh9SDIc8hSI0XX7+sCRXsAQhvoNqR5HhCEMYQhDGMIQhjCE4W9SKR4GDGEIQxjCEIYwhCEMYQhDGMJQsCIKhjCEIQxhCEM9hrIRn6M56Pkrhij/FYk7HHVtAi1PN9YsfTM0/2zUj4RDULTAlKlFT67QO+ERlKuDfmd7fkjod7pmbCMVaV77Yu2TnfJ/iwn3C1l13i7LkcTLEXH9WOGhPVT0oBIAAAAAAAAAAAAAAAAAAAAAz8tferRZACQxxvwAAAAASUVORK5CYII=" alt="profile-img">
+                    <span style="display: flex;display:inline;vertical-align:middle;color: darkmagenta; font-size: 30px">{{comment.name}}</span>
+                    &nbsp;&nbsp;
+                    <p style="display: flex;display:inline;vertical-align:middle;">{{comment.text}}</p>
+                    <br>
+                  </div>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf = "passedval == 'Films'">
+      <mat-card style="justify-content:center; width: 40%" class="marginRange" fxFlex>
+        <img mat-card-image src = "https://starwarsblog.starwars.com/wp-content/uploads/2015/10/tfa_poster_wide_header-1536x864-959818851016.jpg" height="400px" alt = "Learn HTML5">
+        <mat-card-content style="color: black; font-size: 20px"  > 
+          <div> 
+            <p><strong>Episode {{displaydata.episode_id}}: {{displaydata.title}}</strong></p>
+            <p>Date Created: {{displaydata.release_date}}</p>
+            <p>Director: {{displaydata.director}}</p>
+            <p>Producer(s): {{displaydata.producer}}</p>
+            <p>Opening Crawl: </p>
+            <p>{{displaydata.opening_crawl}}</p>
+          </div>
+          <br>
+          <br>
+          <div class="jumbotron text-center">
+            <div class="row" style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <tweet></tweet>
+              <pin-it></pin-it>
+              <fb-like></fb-like>
+              <linkedin-share></linkedin-share>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div>
+            <h2>Comments</h2>
+            <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+              <input id="bordr" placeholder="Your name" type="text" formControlName="username"  style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <br>
+              <textarea style="border: 2px solid; padding: 10px; width: 200px" placeholder="Your message" type="text" formControlName="text"></textarea>
+              <br>
+              <br>
+              <button mat-raised-button type="submit" [disabled]="!commentForm.valid">Submit</button>
+            </form>
+            <br>
+            <br>
+            <div *ngIf = "message != null">
+              <div *ngIf = "message.length >= 1">
+                <div *ngFor="let comment of message">
+                  <div *ngIf = "comment.categoryname == displaydata.name" style="display: flex;display:inline;vertical-align:middle;">
+                    <img style="display: flex;display:inline;vertical-align:middle;" class="prefix" height= "30px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEX///8AAACgoKCYmJj39/fY2NjOzs78/Pzl5eXt7e34+Pi1tbWkpKS5ubmnp6fZ2dk+Pj7Hx8fS0tJgYGDf399DQ0Pu7u6RkZFVVVU0NDRkZGR2dnZqamoNDQ1SUlIZGRlycnKCgoIfHx8sLCyJiYlJSUkbGxsmJiavr68SEhJPw9DsAAAEsklEQVR4nO2dh3YiMQxFYxjKQOg9tCGBDfn/H1xYwoEsU1wUScN59wt8Y8aybMl5eQEAAAAAAAAAAAAAAAAAAABPR6MV1TpnalGrIT0Ycqa1atI3N/pJtTaVHhQd0+N8ax7Zzo+R9NBIGK5S7K4kNenhBTPo5/idOdSlhxhEb17gd2Y0lh6mN42lhd+ZnfRIPRlY+p1YD6UH68POXvBEVXq4zkQjJ8HTqio9YkemfxwFjVm0pAftQuzsd+KjRJuc+N3H0ExKs8WJPrwET9FfeuS2TDwFjXmTHrodtnE+jVIEjU6AoDEl2IlH6yDDhfT4i8nLlWyYSQsUUQ8UNKYprVDAIthwJK2QT9gyc0H3YlOU0dugehIdUsIcNOf8bySGe2mNbKYkgmYt7ZHNK42h0Xv8RrHOnFF7MhURCRojbZIFRTC8oHU13ZMZdqRVMjiQGSr9EBu+hxePbKRd0mmSCWrNEmt0hludB4tDOkOlSSJdsDCmJy2TCk1icUFnjhh+gHFD520b5XcIQxl6hIY6VxrCiK80WkR+d2ppfCq9LaVKgI2ZSKtkEHqgfyORVsmgS2Z4lFbJgC5c6FxKT5AZSotkQvUhLqVFMqHKLgbSIpk0aAQVn3kHFSncUHxvQXSQofW09B82FbNF6C6qociC1QbDC5snn0KKFCqWVigi9PKiIi1QSODZvta86Z6wxUZ1pLgyCxDsSg/eDv+KDL1b7v/wvUjUHihuRH7VbfMSdSV6VXpvSiToNYtz6TE70nLtmSnNInPDLWiUJEz8pGf/MU50nuIX0rCdxlfpkfoztomMb+qziVyGRVn/qhQ70VzGu+w7qY9ZuefvStRJPlP0Fst6qWJ8Pq3mcXfX8LXezNrxE+ndaNZPDEv9y4yOoaG7PdDcZzlcfoVWTu6N+VwNlP6A29+33Af/SWh9x5btTt8mp1G5WyV9747uj3i0xcn2z5i39JnGaPczmuwUlWD2Hjp/t+6V2u2vh4ipJeGIUu/U+m5tIbXUHayOnKP++Le/sLFfEgeZ1x0KjsCrWWM7sZjZzEHczSs1WkmXRxWdjR66+Wti1Ck67liIboHitB31A8v0PWgjbs+sjgEE40bTvlavv9pXOoPauHlm2K7ul3P7tnaxmuix+xMtnghdC8dZiyg9a5GoEfEJGvMuYej/gokPApc2O1ZBgdBP2SBjB3PMoGuItabPa5jwG/JmGoSNeA5wnm2EVz75wNg7S9nD5QLfHpyu7cANtneyvF7Uo2DLlSvmJb2/C1cBOFtK8cCKR5CyR80VHsOjoCHPz9S1joQSntfcrM5mfgmW8tNp2LOBYWw5DGX2pFc4jjMoHxZwh6PJW9aQYzHlz+7v4Xh9SDIc8hSI0XX7+sCRXsAQhvoNqR5HhCEMYQhDGMIQhjCE4W9SKR4GDGEIQxjCEIYwhCEMYQhDGMJQsCIKhjCEIQxhCEM9hrIRn6M56Pkrhij/FYk7HHVtAi1PN9YsfTM0/2zUj4RDULTAlKlFT67QO+ERlKuDfmd7fkjod7pmbCMVaV77Yu2TnfJ/iwn3C1l13i7LkcTLEXH9WOGhPVT0oBIAAAAAAAAAAAAAAAAAAAAAz8tferRZACQxxvwAAAAASUVORK5CYII=" alt="profile-img">
+                    <span style="display: flex;display:inline;vertical-align:middle;color: darkmagenta; font-size: 30px">{{comment.name}}</span>
+                    &nbsp;&nbsp;
+                    <p style="display: flex;display:inline;vertical-align:middle;">{{comment.text}}</p>
+                    <br>
+                  </div>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf = "passedval == 'Species'">
+      <mat-card style="justify-content:center; width: 40%" class="marginRange" fxFlex>
+        <img mat-card-image src = "https://dustinanddragons.files.wordpress.com/2016/05/species-aor.jpg?w=1920&h=700&crop=1" height="400px" alt = "Learn HTML5">
+        <mat-card-content style="color: black; font-size: 20px"  > 
+          <div> 
+            <p><strong>{{displaydata.name}}</strong></p>
+            <p>Classification: {{displaydata.classification}}</p>
+            <p>Designation: {{displaydata.designation}}</p>
+            <p>Language: {{displaydata.language}}</p>
+            <p>Avg Lifespan: {{displaydata.average_lifespan}}</p>
+            <p>Avg Height: {{displaydata.average_height}}</p>
+            <p>Hair Color: {{displaydata.hair_color}}</p>
+            <p>Skin Color: {{displaydata.skin_color}}</p>
+            <p>Eye Color: {{displaydata.eye_color}}</p>
+            <p>Homeworld: {{homeworld}}</p>
+          </div>
+          <br>
+          <br>
+          <div class="jumbotron text-center">
+            <div class="row" style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <tweet></tweet>
+              <pin-it></pin-it>
+              <fb-like></fb-like>
+              <linkedin-share></linkedin-share>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div>
+            <h2>Comments</h2>
+            <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+              <input id="bordr" placeholder="Your name" type="text" formControlName="username"  style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <br>
+              <textarea style="border: 2px solid; padding: 10px; width: 200px" placeholder="Your message" type="text" formControlName="text"></textarea>
+              <br>
+              <br>
+              <button mat-raised-button type="submit" [disabled]="!commentForm.valid">Submit</button>
+            </form>
+            <br>
+            <br>
+            <div *ngIf = "message != null">
+              <div *ngIf = "message.length >= 1">
+                <div *ngFor="let comment of message">
+                  <div *ngIf = "comment.categoryname == displaydata.name" style="display: flex;display:inline;vertical-align:middle;">
+                    <img style="display: flex;display:inline;vertical-align:middle;" class="prefix" height= "30px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEX///8AAACgoKCYmJj39/fY2NjOzs78/Pzl5eXt7e34+Pi1tbWkpKS5ubmnp6fZ2dk+Pj7Hx8fS0tJgYGDf399DQ0Pu7u6RkZFVVVU0NDRkZGR2dnZqamoNDQ1SUlIZGRlycnKCgoIfHx8sLCyJiYlJSUkbGxsmJiavr68SEhJPw9DsAAAEsklEQVR4nO2dh3YiMQxFYxjKQOg9tCGBDfn/H1xYwoEsU1wUScN59wt8Y8aybMl5eQEAAAAAAAAAAAAAAAAAAABPR6MV1TpnalGrIT0Ycqa1atI3N/pJtTaVHhQd0+N8ax7Zzo+R9NBIGK5S7K4kNenhBTPo5/idOdSlhxhEb17gd2Y0lh6mN42lhd+ZnfRIPRlY+p1YD6UH68POXvBEVXq4zkQjJ8HTqio9YkemfxwFjVm0pAftQuzsd+KjRJuc+N3H0ExKs8WJPrwET9FfeuS2TDwFjXmTHrodtnE+jVIEjU6AoDEl2IlH6yDDhfT4i8nLlWyYSQsUUQ8UNKYprVDAIthwJK2QT9gyc0H3YlOU0dugehIdUsIcNOf8bySGe2mNbKYkgmYt7ZHNK42h0Xv8RrHOnFF7MhURCRojbZIFRTC8oHU13ZMZdqRVMjiQGSr9EBu+hxePbKRd0mmSCWrNEmt0hludB4tDOkOlSSJdsDCmJy2TCk1icUFnjhh+gHFD520b5XcIQxl6hIY6VxrCiK80WkR+d2ppfCq9LaVKgI2ZSKtkEHqgfyORVsmgS2Z4lFbJgC5c6FxKT5AZSotkQvUhLqVFMqHKLgbSIpk0aAQVn3kHFSncUHxvQXSQofW09B82FbNF6C6qociC1QbDC5snn0KKFCqWVigi9PKiIi1QSODZvta86Z6wxUZ1pLgyCxDsSg/eDv+KDL1b7v/wvUjUHihuRH7VbfMSdSV6VXpvSiToNYtz6TE70nLtmSnNInPDLWiUJEz8pGf/MU50nuIX0rCdxlfpkfoztomMb+qziVyGRVn/qhQ70VzGu+w7qY9ZuefvStRJPlP0Fst6qWJ8Pq3mcXfX8LXezNrxE+ndaNZPDEv9y4yOoaG7PdDcZzlcfoVWTu6N+VwNlP6A29+33Af/SWh9x5btTt8mp1G5WyV9747uj3i0xcn2z5i39JnGaPczmuwUlWD2Hjp/t+6V2u2vh4ipJeGIUu/U+m5tIbXUHayOnKP++Le/sLFfEgeZ1x0KjsCrWWM7sZjZzEHczSs1WkmXRxWdjR66+Wti1Ck67liIboHitB31A8v0PWgjbs+sjgEE40bTvlavv9pXOoPauHlm2K7ul3P7tnaxmuix+xMtnghdC8dZiyg9a5GoEfEJGvMuYej/gokPApc2O1ZBgdBP2SBjB3PMoGuItabPa5jwG/JmGoSNeA5wnm2EVz75wNg7S9nD5QLfHpyu7cANtneyvF7Uo2DLlSvmJb2/C1cBOFtK8cCKR5CyR80VHsOjoCHPz9S1joQSntfcrM5mfgmW8tNp2LOBYWw5DGX2pFc4jjMoHxZwh6PJW9aQYzHlz+7v4Xh9SDIc8hSI0XX7+sCRXsAQhvoNqR5HhCEMYQhDGMIQhjCE4W9SKR4GDGEIQxjCEIYwhCEMYQhDGMJQsCIKhjCEIQxhCEM9hrIRn6M56Pkrhij/FYk7HHVtAi1PN9YsfTM0/2zUj4RDULTAlKlFT67QO+ERlKuDfmd7fkjod7pmbCMVaV77Yu2TnfJ/iwn3C1l13i7LkcTLEXH9WOGhPVT0oBIAAAAAAAAAAAAAAAAAAAAAz8tferRZACQxxvwAAAAASUVORK5CYII=" alt="profile-img">
+                    <span style="display: flex;display:inline;vertical-align:middle;color: darkmagenta; font-size: 30px">{{comment.name}}</span>
+                    &nbsp;&nbsp;
+                    <p style="display: flex;display:inline;vertical-align:middle;">{{comment.text}}</p>
+                    <br>
+                  </div>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf = "passedval == 'Starship'">
+      <mat-card style="justify-content:center; width: 40%" class="marginRange" fxFlex>
+        <img mat-card-image src = "https://img.buzzfeed.com/buzzfeed-static/static/2016-01/4/12/enhanced/webdr01/enhanced-5137-1451927050-7.jpg" height="400px" alt = "Learn HTML5">
+        <mat-card-content style="color: black; font-size: 20px"  > 
+          <div> 
+            <p><strong>{{displaydata.name}}</strong></p>
+            <p>Model: {{displaydata.model}}</p>
+            <p>Manufacturer: {{displaydata.manufacturer}}</p>
+            <p>Class: {{displaydata.starship_class}}</p>
+            <p>Cost: {{displaydata.cost_in_credits}}</p>
+            <p>Speed: {{displaydata.max_atmosphering_speed}}</p>
+            <p>Hyperdrive Rating: {{displaydata.hyperdrive_rating}}</p>
+            <p>MGLT: {{displaydata.MGLT}}</p>
+            <p>Length: {{displaydata.length}}</p>
+            <p>Cargo Capacity: {{displaydata.cargo_capacity}}</p>
+            <p>Minimum Crew: {{displaydata.crew}}</p>
+            <p>Passengers: {{displaydata.passengers}}</p>
+            <p>Consumables: {{displaydata.consumables}}</p>
+          </div>
+          <br>
+          <br>
+          <div class="jumbotron text-center">
+            <div class="row" style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <tweet></tweet>
+              <pin-it></pin-it>
+              <fb-like></fb-like>
+              <linkedin-share></linkedin-share>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div>
+            <h2>Comments</h2>
+            <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+              <input id="bordr" placeholder="Your name" type="text" formControlName="username"  style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <br>
+              <textarea style="border: 2px solid; padding: 10px; width: 200px" placeholder="Your message" type="text" formControlName="text"></textarea>
+              <br>
+              <br>
+              <button mat-raised-button type="submit" [disabled]="!commentForm.valid">Submit</button>
+            </form>
+            <br>
+            <br>
+            <div *ngIf = "message != null">
+              <div *ngIf = "message.length >= 1">
+                <div *ngFor="let comment of message">
+                  <div *ngIf = "comment.categoryname == displaydata.name" style="display: flex;display:inline;vertical-align:middle;">
+                    <img style="display: flex;display:inline;vertical-align:middle;" class="prefix" height= "30px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEX///8AAACgoKCYmJj39/fY2NjOzs78/Pzl5eXt7e34+Pi1tbWkpKS5ubmnp6fZ2dk+Pj7Hx8fS0tJgYGDf399DQ0Pu7u6RkZFVVVU0NDRkZGR2dnZqamoNDQ1SUlIZGRlycnKCgoIfHx8sLCyJiYlJSUkbGxsmJiavr68SEhJPw9DsAAAEsklEQVR4nO2dh3YiMQxFYxjKQOg9tCGBDfn/H1xYwoEsU1wUScN59wt8Y8aybMl5eQEAAAAAAAAAAAAAAAAAAABPR6MV1TpnalGrIT0Ycqa1atI3N/pJtTaVHhQd0+N8ax7Zzo+R9NBIGK5S7K4kNenhBTPo5/idOdSlhxhEb17gd2Y0lh6mN42lhd+ZnfRIPRlY+p1YD6UH68POXvBEVXq4zkQjJ8HTqio9YkemfxwFjVm0pAftQuzsd+KjRJuc+N3H0ExKs8WJPrwET9FfeuS2TDwFjXmTHrodtnE+jVIEjU6AoDEl2IlH6yDDhfT4i8nLlWyYSQsUUQ8UNKYprVDAIthwJK2QT9gyc0H3YlOU0dugehIdUsIcNOf8bySGe2mNbKYkgmYt7ZHNK42h0Xv8RrHOnFF7MhURCRojbZIFRTC8oHU13ZMZdqRVMjiQGSr9EBu+hxePbKRd0mmSCWrNEmt0hludB4tDOkOlSSJdsDCmJy2TCk1icUFnjhh+gHFD520b5XcIQxl6hIY6VxrCiK80WkR+d2ppfCq9LaVKgI2ZSKtkEHqgfyORVsmgS2Z4lFbJgC5c6FxKT5AZSotkQvUhLqVFMqHKLgbSIpk0aAQVn3kHFSncUHxvQXSQofW09B82FbNF6C6qociC1QbDC5snn0KKFCqWVigi9PKiIi1QSODZvta86Z6wxUZ1pLgyCxDsSg/eDv+KDL1b7v/wvUjUHihuRH7VbfMSdSV6VXpvSiToNYtz6TE70nLtmSnNInPDLWiUJEz8pGf/MU50nuIX0rCdxlfpkfoztomMb+qziVyGRVn/qhQ70VzGu+w7qY9ZuefvStRJPlP0Fst6qWJ8Pq3mcXfX8LXezNrxE+ndaNZPDEv9y4yOoaG7PdDcZzlcfoVWTu6N+VwNlP6A29+33Af/SWh9x5btTt8mp1G5WyV9747uj3i0xcn2z5i39JnGaPczmuwUlWD2Hjp/t+6V2u2vh4ipJeGIUu/U+m5tIbXUHayOnKP++Le/sLFfEgeZ1x0KjsCrWWM7sZjZzEHczSs1WkmXRxWdjR66+Wti1Ck67liIboHitB31A8v0PWgjbs+sjgEE40bTvlavv9pXOoPauHlm2K7ul3P7tnaxmuix+xMtnghdC8dZiyg9a5GoEfEJGvMuYej/gokPApc2O1ZBgdBP2SBjB3PMoGuItabPa5jwG/JmGoSNeA5wnm2EVz75wNg7S9nD5QLfHpyu7cANtneyvF7Uo2DLlSvmJb2/C1cBOFtK8cCKR5CyR80VHsOjoCHPz9S1joQSntfcrM5mfgmW8tNp2LOBYWw5DGX2pFc4jjMoHxZwh6PJW9aQYzHlz+7v4Xh9SDIc8hSI0XX7+sCRXsAQhvoNqR5HhCEMYQhDGMIQhjCE4W9SKR4GDGEIQxjCEIYwhCEMYQhDGMJQsCIKhjCEIQxhCEM9hrIRn6M56Pkrhij/FYk7HHVtAi1PN9YsfTM0/2zUj4RDULTAlKlFT67QO+ERlKuDfmd7fkjod7pmbCMVaV77Yu2TnfJ/iwn3C1l13i7LkcTLEXH9WOGhPVT0oBIAAAAAAAAAAAAAAAAAAAAAz8tferRZACQxxvwAAAAASUVORK5CYII=" alt="profile-img">
+                    <span style="display: flex;display:inline;vertical-align:middle;color: darkmagenta; font-size: 30px">{{comment.name}}</span>
+                    &nbsp;&nbsp;
+                    <p style="display: flex;display:inline;vertical-align:middle;">{{comment.text}}</p>
+                    <br>
+                  </div>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf = "passedval == 'Vehicles'">
+      <mat-card style="justify-content:center; width: 40%" class="marginRange" fxFlex>
+        <img mat-card-image src = "https://i.ebayimg.com/images/g/-fEAAOSw6SVajhCB/s-l300.jpg" height= "400px" alt = "Learn HTML5">
+        <mat-card-content style="color: black; font-size: 20px"  > 
+          <div> 
+            <p><strong>{{displaydata.name}}</strong></p>
+            <p>Model: {{displaydata.model}}</p>
+            <p>Manufacturer: {{displaydata.manufacturer}}</p>
+            <p>Class: {{displaydata.vehicle_class}}</p>
+            <p>Cost: {{displaydata.cost_in_credits}}</p>
+            <p>Speed: {{displaydata.max_atmosphering_speed}}</p>
+            <p>Length: {{displaydata.length}}</p>
+            <p>Cargo Capacity: {{displaydata.cargo_capacity}}</p>
+            <p>Minimum Crew: {{displaydata.crew}}</p>
+            <p>Passengers: {{displaydata.passengers}}</p>
+            <p>Consumables: {{displaydata.consumables}}</p>
+          </div>
+          <br>
+          <br>
+          <div class="jumbotron text-center">
+            <div class="row" style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <tweet></tweet>
+              <pin-it></pin-it>
+              <fb-like></fb-like>
+              <linkedin-share></linkedin-share>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div>
+            <h2>Comments</h2>
+            <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+              <input id="bordr" placeholder="Your name" type="text" formControlName="username"  style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <br>
+              <textarea style="border: 2px solid; padding: 10px; width: 200px" placeholder="Your message" type="text" formControlName="text"></textarea>
+              <br>
+              <br>
+              <button mat-raised-button type="submit" [disabled]="!commentForm.valid">Submit</button>
+            </form>
+            <br>
+            <br>
+            <div *ngIf = "message != null">
+              <div *ngIf = "message.length >= 1">
+                <div *ngFor="let comment of message">
+                  <div *ngIf = "comment.categoryname == displaydata.name" style="display: flex;display:inline;vertical-align:middle;">
+                    <img style="display: flex;display:inline;vertical-align:middle;" class="prefix" height= "30px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEX///8AAACgoKCYmJj39/fY2NjOzs78/Pzl5eXt7e34+Pi1tbWkpKS5ubmnp6fZ2dk+Pj7Hx8fS0tJgYGDf399DQ0Pu7u6RkZFVVVU0NDRkZGR2dnZqamoNDQ1SUlIZGRlycnKCgoIfHx8sLCyJiYlJSUkbGxsmJiavr68SEhJPw9DsAAAEsklEQVR4nO2dh3YiMQxFYxjKQOg9tCGBDfn/H1xYwoEsU1wUScN59wt8Y8aybMl5eQEAAAAAAAAAAAAAAAAAAABPR6MV1TpnalGrIT0Ycqa1atI3N/pJtTaVHhQd0+N8ax7Zzo+R9NBIGK5S7K4kNenhBTPo5/idOdSlhxhEb17gd2Y0lh6mN42lhd+ZnfRIPRlY+p1YD6UH68POXvBEVXq4zkQjJ8HTqio9YkemfxwFjVm0pAftQuzsd+KjRJuc+N3H0ExKs8WJPrwET9FfeuS2TDwFjXmTHrodtnE+jVIEjU6AoDEl2IlH6yDDhfT4i8nLlWyYSQsUUQ8UNKYprVDAIthwJK2QT9gyc0H3YlOU0dugehIdUsIcNOf8bySGe2mNbKYkgmYt7ZHNK42h0Xv8RrHOnFF7MhURCRojbZIFRTC8oHU13ZMZdqRVMjiQGSr9EBu+hxePbKRd0mmSCWrNEmt0hludB4tDOkOlSSJdsDCmJy2TCk1icUFnjhh+gHFD520b5XcIQxl6hIY6VxrCiK80WkR+d2ppfCq9LaVKgI2ZSKtkEHqgfyORVsmgS2Z4lFbJgC5c6FxKT5AZSotkQvUhLqVFMqHKLgbSIpk0aAQVn3kHFSncUHxvQXSQofW09B82FbNF6C6qociC1QbDC5snn0KKFCqWVigi9PKiIi1QSODZvta86Z6wxUZ1pLgyCxDsSg/eDv+KDL1b7v/wvUjUHihuRH7VbfMSdSV6VXpvSiToNYtz6TE70nLtmSnNInPDLWiUJEz8pGf/MU50nuIX0rCdxlfpkfoztomMb+qziVyGRVn/qhQ70VzGu+w7qY9ZuefvStRJPlP0Fst6qWJ8Pq3mcXfX8LXezNrxE+ndaNZPDEv9y4yOoaG7PdDcZzlcfoVWTu6N+VwNlP6A29+33Af/SWh9x5btTt8mp1G5WyV9747uj3i0xcn2z5i39JnGaPczmuwUlWD2Hjp/t+6V2u2vh4ipJeGIUu/U+m5tIbXUHayOnKP++Le/sLFfEgeZ1x0KjsCrWWM7sZjZzEHczSs1WkmXRxWdjR66+Wti1Ck67liIboHitB31A8v0PWgjbs+sjgEE40bTvlavv9pXOoPauHlm2K7ul3P7tnaxmuix+xMtnghdC8dZiyg9a5GoEfEJGvMuYej/gokPApc2O1ZBgdBP2SBjB3PMoGuItabPa5jwG/JmGoSNeA5wnm2EVz75wNg7S9nD5QLfHpyu7cANtneyvF7Uo2DLlSvmJb2/C1cBOFtK8cCKR5CyR80VHsOjoCHPz9S1joQSntfcrM5mfgmW8tNp2LOBYWw5DGX2pFc4jjMoHxZwh6PJW9aQYzHlz+7v4Xh9SDIc8hSI0XX7+sCRXsAQhvoNqR5HhCEMYQhDGMIQhjCE4W9SKR4GDGEIQxjCEIYwhCEMYQhDGMJQsCIKhjCEIQxhCEM9hrIRn6M56Pkrhij/FYk7HHVtAi1PN9YsfTM0/2zUj4RDULTAlKlFT67QO+ERlKuDfmd7fkjod7pmbCMVaV77Yu2TnfJ/iwn3C1l13i7LkcTLEXH9WOGhPVT0oBIAAAAAAAAAAAAAAAAAAAAAz8tferRZACQxxvwAAAAASUVORK5CYII=" alt="profile-img">
+                    <span style="display: flex;display:inline;vertical-align:middle;color: darkmagenta; font-size: 30px">{{comment.name}}</span>
+                    &nbsp;&nbsp;
+                    <p style="display: flex;display:inline;vertical-align:middle;">{{comment.text}}</p>
+                    <br>
+                  </div>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+    <div *ngIf = "passedval == 'Planets'">
+      <mat-card style="justify-content:center; width: 40%" class="marginRange" fxFlex>
+        <img mat-card-image src = "http://i.imgur.com/isEO1Ro.jpg" height= "400px" alt = "Learn HTML5">
+        <mat-card-content style="color: black; font-size: 20px"  > 
+          <div> 
+            <p><strong>{{displaydata.name}}</strong></p>
+            <p>Population: {{displaydata.population}}</p>
+            <p>Rotation Period: {{displaydata.rotation_period}}</p>
+            <p>Orbital Period: {{displaydata.orbital_period}}</p>
+            <p>Diameter: {{diameter}}</p>
+            <p>Gravity: {{displaydata.gravity}}</p>
+            <p>Terrain: {{displaydata.terrain}}</p>
+            <p>Surface Water: {{displaydata.surface_water}}</p>
+            <p>Climate: {{displaydata.climate}}</p>
+            <p>Residents:</p>
+            <div *ngIf = "residents?.length > 0" >
+              <div *ngFor ="let resident of residents">
+                <li>{{resident}}</li>
+              </div>
+            </div>
+            <div *ngIf = "!residents?.length > 0">
+              <li>None</li>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div class="jumbotron text-center">
+            <div class="row" style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <tweet></tweet>
+              <pin-it></pin-it>
+              <fb-like></fb-like>
+              <linkedin-share></linkedin-share>
+            </div>
+          </div>
+          <br>
+          <br>
+          <div>
+            <h2>Comments</h2>
+            <form [formGroup]="commentForm" (ngSubmit)="onSubmit()">
+              <input id="bordr" placeholder="Your name" type="text" formControlName="username"  style="display:flex; justify-content:space-around; align-items:center" fxflex>
+              <br>
+              <textarea style="border: 2px solid; padding: 10px; width: 200px" placeholder="Your message" type="text" formControlName="text"></textarea>
+              <br>
+              <br>
+              <button mat-raised-button type="submit" [disabled]="!commentForm.valid">Submit</button>
+            </form>
+            <br>
+            <br>
+            <div *ngIf = "message != null">
+              <div *ngIf = "message.length >= 1">
+                <div *ngFor="let comment of message">
+                  <div *ngIf = "comment.categoryname == displaydata.name" style="display: flex;display:inline;vertical-align:middle;">
+                    <img style="display: flex;display:inline;vertical-align:middle;" class="prefix" height= "30px" src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAOEAAADhCAMAAAAJbSJIAAAAflBMVEX///8AAACgoKCYmJj39/fY2NjOzs78/Pzl5eXt7e34+Pi1tbWkpKS5ubmnp6fZ2dk+Pj7Hx8fS0tJgYGDf399DQ0Pu7u6RkZFVVVU0NDRkZGR2dnZqamoNDQ1SUlIZGRlycnKCgoIfHx8sLCyJiYlJSUkbGxsmJiavr68SEhJPw9DsAAAEsklEQVR4nO2dh3YiMQxFYxjKQOg9tCGBDfn/H1xYwoEsU1wUScN59wt8Y8aybMl5eQEAAAAAAAAAAAAAAAAAAABPR6MV1TpnalGrIT0Ycqa1atI3N/pJtTaVHhQd0+N8ax7Zzo+R9NBIGK5S7K4kNenhBTPo5/idOdSlhxhEb17gd2Y0lh6mN42lhd+ZnfRIPRlY+p1YD6UH68POXvBEVXq4zkQjJ8HTqio9YkemfxwFjVm0pAftQuzsd+KjRJuc+N3H0ExKs8WJPrwET9FfeuS2TDwFjXmTHrodtnE+jVIEjU6AoDEl2IlH6yDDhfT4i8nLlWyYSQsUUQ8UNKYprVDAIthwJK2QT9gyc0H3YlOU0dugehIdUsIcNOf8bySGe2mNbKYkgmYt7ZHNK42h0Xv8RrHOnFF7MhURCRojbZIFRTC8oHU13ZMZdqRVMjiQGSr9EBu+hxePbKRd0mmSCWrNEmt0hludB4tDOkOlSSJdsDCmJy2TCk1icUFnjhh+gHFD520b5XcIQxl6hIY6VxrCiK80WkR+d2ppfCq9LaVKgI2ZSKtkEHqgfyORVsmgS2Z4lFbJgC5c6FxKT5AZSotkQvUhLqVFMqHKLgbSIpk0aAQVn3kHFSncUHxvQXSQofW09B82FbNF6C6qociC1QbDC5snn0KKFCqWVigi9PKiIi1QSODZvta86Z6wxUZ1pLgyCxDsSg/eDv+KDL1b7v/wvUjUHihuRH7VbfMSdSV6VXpvSiToNYtz6TE70nLtmSnNInPDLWiUJEz8pGf/MU50nuIX0rCdxlfpkfoztomMb+qziVyGRVn/qhQ70VzGu+w7qY9ZuefvStRJPlP0Fst6qWJ8Pq3mcXfX8LXezNrxE+ndaNZPDEv9y4yOoaG7PdDcZzlcfoVWTu6N+VwNlP6A29+33Af/SWh9x5btTt8mp1G5WyV9747uj3i0xcn2z5i39JnGaPczmuwUlWD2Hjp/t+6V2u2vh4ipJeGIUu/U+m5tIbXUHayOnKP++Le/sLFfEgeZ1x0KjsCrWWM7sZjZzEHczSs1WkmXRxWdjR66+Wti1Ck67liIboHitB31A8v0PWgjbs+sjgEE40bTvlavv9pXOoPauHlm2K7ul3P7tnaxmuix+xMtnghdC8dZiyg9a5GoEfEJGvMuYej/gokPApc2O1ZBgdBP2SBjB3PMoGuItabPa5jwG/JmGoSNeA5wnm2EVz75wNg7S9nD5QLfHpyu7cANtneyvF7Uo2DLlSvmJb2/C1cBOFtK8cCKR5CyR80VHsOjoCHPz9S1joQSntfcrM5mfgmW8tNp2LOBYWw5DGX2pFc4jjMoHxZwh6PJW9aQYzHlz+7v4Xh9SDIc8hSI0XX7+sCRXsAQhvoNqR5HhCEMYQhDGMIQhjCE4W9SKR4GDGEIQxjCEIYwhCEMYQhDGMJQsCIKhjCEIQxhCEM9hrIRn6M56Pkrhij/FYk7HHVtAi1PN9YsfTM0/2zUj4RDULTAlKlFT67QO+ERlKuDfmd7fkjod7pmbCMVaV77Yu2TnfJ/iwn3C1l13i7LkcTLEXH9WOGhPVT0oBIAAAAAAAAAAAAAAAAAAAAAz8tferRZACQxxvwAAAAASUVORK5CYII=" alt="profile-img">
+                    <span style="display: flex;display:inline;vertical-align:middle;color: darkmagenta; font-size: 30px">{{comment.name}}</span>
+                    &nbsp;&nbsp;
+                    <p style="display: flex;display:inline;vertical-align:middle;">{{comment.text}}</p>
+                    <br>
+                  </div>
+                  <br>
+                </div>
+              </div>
+            </div>
+          </div>
+        </mat-card-content>
+      </mat-card>
+    </div>
+  </div>
+</div>
+      

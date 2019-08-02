@@ -1,0 +1,24 @@
+.example-card {
+    max-width: 400px;
+  }
+
+.marginRange
+{
+  margin-top: 40px;
+  align-content: center;
+  margin-bottom: 40px;
+  margin-left:28%;
+}
+
+.multi_lines_text { white-space: pre-line; }
+
+#bordr {
+  border-radius: 25px;
+  border: 2px solid;
+  padding: 10px; 
+  width: 200px;
+  height: 2px;    
+}
+
+
+    
